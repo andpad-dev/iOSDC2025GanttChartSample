@@ -10,6 +10,9 @@ import UIKit
 
 final class GanttChartView: UIView {
     
+    typealias SectionID = Int
+    typealias ItemID = String
+    
     private let collectionView: UICollectionView = {
         // TODO: Replace with GanttChartViewLayout
         let layout = UICollectionViewCompositionalLayout.list(
@@ -21,6 +24,23 @@ final class GanttChartView: UIView {
         )
         return collectionView
     }()
+    
+    private let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, ItemID> { cell, indexPath, itemID in
+        var configuration = cell.defaultContentConfiguration()
+        configuration.text = itemID
+        cell.contentConfiguration = configuration
+    }
+    
+    private lazy var dataSource = UICollectionViewDiffableDataSource<SectionID, ItemID>(
+        collectionView: collectionView
+    ) { [weak self] collectionView, indexPath, itemID in
+        guard let self else { return nil }
+        return collectionView.dequeueConfiguredReusableCell(
+            using: cellRegistration,
+            for: indexPath,
+            item: itemID
+        )
+    }
     
     // MARK: - Initializers
     
