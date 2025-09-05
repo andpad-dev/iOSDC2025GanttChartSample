@@ -5,6 +5,7 @@
 //  Created by 西悠作 on 2025/09/05.
 //
 
+import SwiftUI
 import UIKit
 
 final class GanttChartView: UIView {
@@ -24,4 +25,8 @@ final class GanttChartView: UIView {
     private func setUpViews() {
         backgroundColor = .systemBackground
     }
+}
+
+#Preview {
+    ContentView()
 }

@@ -17,3 +17,7 @@ struct GanttChart: UIViewRepresentable {
         // NOP
     }
 }
+
+#Preview {
+    ContentView()
+}
