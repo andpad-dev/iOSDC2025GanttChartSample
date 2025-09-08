@@ -38,11 +38,14 @@ final class GanttChartView: UIView {
         collectionView: collectionView
     ) { [weak self] collectionView, indexPath, itemID in
         guard let self else { return nil }
-        return collectionView.dequeueConfiguredReusableCell(
-            using: workItemCellRegistration,
-            for: indexPath,
-            item: .init(title: "\(itemID)")
-        )
+        switch itemID {
+        case .workItem(let workItemID):
+            return collectionView.dequeueConfiguredReusableCell(
+                using: workItemCellRegistration,
+                for: indexPath,
+                item: .init(title: "\(workItemID)")
+            )
+        }
     }
     
     // MARK: - Initializers
