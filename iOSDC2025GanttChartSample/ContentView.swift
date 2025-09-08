@@ -21,6 +21,9 @@ struct ContentView: View {
                     .visible,
                     for: .navigationBar
                 )
+                .task {
+                    await ganttChartState.refresh()
+                }
         }
     }
 }
