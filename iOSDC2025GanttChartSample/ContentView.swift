@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var ganttChartState = GanttChartState()
+    
     var body: some View {
         NavigationStack {
-            GanttChart()
+            GanttChart(state: ganttChartState)
                 .ignoresSafeArea()
                 .navigationTitle("ガントチャート")
                 .navigationBarTitleDisplayMode(.inline)
