@@ -26,10 +26,7 @@ final class GanttChartView: UIView {
     // MARK: UI components
     
     private let collectionView: UICollectionView = {
-        // TODO: Replace with GanttChartViewLayout
-        let layout = UICollectionViewCompositionalLayout.list(
-            using: .init(appearance: .insetGrouped)
-        )
+        let layout = GanttChartViewLayout()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: layout
