@@ -10,8 +10,13 @@ import UIKit
 
 final class GanttChartView: UIView {
     
-    typealias SectionID = Int
-    typealias ItemID = String
+    enum SectionID: Hashable, Sendable {
+        case workItemGroup(WorkItemGroup.ID)
+    }
+    
+    enum ItemID: Hashable, Sendable {
+        case workItem(WorkItem.ID)
+    }
     
     private let collectionView: UICollectionView = {
         // TODO: Replace with GanttChartViewLayout
@@ -27,7 +32,7 @@ final class GanttChartView: UIView {
     
     private let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, ItemID> { cell, indexPath, itemID in
         var configuration = cell.defaultContentConfiguration()
-        configuration.text = itemID
+        configuration.text = "\(itemID)"
         cell.contentConfiguration = configuration
     }
     
