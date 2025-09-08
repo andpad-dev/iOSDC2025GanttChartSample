@@ -32,20 +32,16 @@ final class GanttChartView: UIView {
         return collectionView
     }()
     
-    private let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, ItemID> { cell, indexPath, itemID in
-        var configuration = cell.defaultContentConfiguration()
-        configuration.text = "\(itemID)"
-        cell.contentConfiguration = configuration
-    }
+    private let workItemCellRegistration = WorkItemCellRegistration()
     
     private lazy var dataSource = UICollectionViewDiffableDataSource<SectionID, ItemID>(
         collectionView: collectionView
     ) { [weak self] collectionView, indexPath, itemID in
         guard let self else { return nil }
         return collectionView.dequeueConfiguredReusableCell(
-            using: cellRegistration,
+            using: workItemCellRegistration,
             for: indexPath,
-            item: itemID
+            item: .init(title: "\(itemID)")
         )
     }
     
