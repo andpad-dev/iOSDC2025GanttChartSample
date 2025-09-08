@@ -58,7 +58,14 @@ struct GanttChart: UIViewRepresentable {
     let state: GanttChartState
     
     func makeUIView(context: Context) -> GanttChartView {
-        GanttChartView()
+        GanttChartView(
+            workItemGroupProvider: { groupID in
+                state.workItemGroup(with: groupID)!
+            },
+            workItemProvider: { workItemID in
+                state.workItem(with: workItemID)!
+            }
+        )
     }
     
     func updateUIView(_ uiView: GanttChartView, context: Context) {

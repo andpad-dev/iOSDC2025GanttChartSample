@@ -20,6 +20,11 @@ final class GanttChartView: UIView {
     
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>
     
+    private var workItemGroupProvider: (WorkItemGroup.ID) -> WorkItemGroup
+    private var workItemProvider: (WorkItem.ID) -> WorkItem
+    
+    // MARK: UI components
+    
     private let collectionView: UICollectionView = {
         // TODO: Replace with GanttChartViewLayout
         let layout = UICollectionViewCompositionalLayout.list(
@@ -50,14 +55,19 @@ final class GanttChartView: UIView {
     
     // MARK: - Initializers
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(
+        workItemGroupProvider: @escaping (WorkItemGroup.ID) -> WorkItemGroup,
+        workItemProvider: @escaping (WorkItem.ID) -> WorkItem
+    ) {
+        self.workItemGroupProvider = workItemGroupProvider
+        self.workItemProvider = workItemProvider
+        super.init(frame: .zero)
+        
         setUpViews()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setUpViews()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setUpViews() {
