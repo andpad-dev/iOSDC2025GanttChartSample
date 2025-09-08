@@ -18,6 +18,8 @@ final class GanttChartView: UIView {
         case workItem(WorkItem.ID)
     }
     
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>
+    
     private let collectionView: UICollectionView = {
         // TODO: Replace with GanttChartViewLayout
         let layout = UICollectionViewCompositionalLayout.list(
@@ -76,6 +78,21 @@ final class GanttChartView: UIView {
                 collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             ]
         )
+    }
+    
+    // MARK: - Methods
+    
+    func configure(workItemGroups: [WorkItemGroup]) {
+        var snapshot = Snapshot()
+        for group in workItemGroups {
+            let sectionID = SectionID.workItemGroup(group.id)
+            snapshot.appendSections([sectionID])
+            snapshot.appendItems(
+                group.children.map { .workItem($0.id) },
+                toSection: sectionID
+            )
+        }
+        dataSource.apply(snapshot)
     }
 }
 
