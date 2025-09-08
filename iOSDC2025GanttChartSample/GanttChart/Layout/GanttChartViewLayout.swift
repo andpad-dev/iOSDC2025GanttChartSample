@@ -33,21 +33,27 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     // MARK: - Lifecycle
     
     override func prepare() {
+        guard let collectionView else { return }
+        
         // TODO: Implement
-        let cellHeight: CGFloat = 36
-        let spacing: CGFloat = 8
-        for i in 0..<5 {
-            let indexPath = IndexPath(item: i, section: 0)
-            let dummy = UICollectionViewLayoutAttributes(
-                forCellWith: indexPath
-            )
-            dummy.frame = .init(
-                x: 20,
-                y: (cellHeight + spacing) * CGFloat(i),
-                width: 300,
-                height: cellHeight
-            )
-            layoutAttributes.items[indexPath] = dummy
+        let cellSize = CGSize(width: 100, height: 36)
+        let horizontalSpacing: CGFloat = 16
+        let verticalSpacing: CGFloat = 8
+        for section in 0..<collectionView.numberOfSections {
+            for item in 0..<collectionView.numberOfItems(inSection: section) {
+                let indexPath = IndexPath(item: item, section: section)
+                let dummy = UICollectionViewLayoutAttributes(
+                    forCellWith: indexPath
+                )
+                dummy.frame = .init(
+                    origin: .init(
+                        x: (cellSize.width + horizontalSpacing) * CGFloat(section),
+                        y: (cellSize.height + verticalSpacing) * CGFloat(item)
+                    ),
+                    size: cellSize
+                )
+                layoutAttributes.items[indexPath] = dummy
+            }
         }
     }
     
