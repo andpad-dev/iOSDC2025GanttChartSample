@@ -14,11 +14,22 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         in rect: CGRect
     ) -> [UICollectionViewLayoutAttributes]? {
         // TODO: Implement
-        let dummy = UICollectionViewLayoutAttributes(
-            forCellWith: IndexPath(item: 0, section: 0)
-        )
-        dummy.frame = .init(x: 20, y: 40, width: 300, height: 36)
-        return [dummy]
+        let cellHeight: CGFloat = 36
+        let spacing: CGFloat = 8
+        var dummyAttributes: [UICollectionViewLayoutAttributes] = []
+        for i in 0..<5 {
+            let dummy = UICollectionViewLayoutAttributes(
+                forCellWith: IndexPath(item: i, section: 0)
+            )
+            dummy.frame = .init(
+                x: 20,
+                y: (cellHeight + spacing) * CGFloat(i),
+                width: 300,
+                height: cellHeight
+            )
+            dummyAttributes.append(dummy)
+        }
+        return dummyAttributes
     }
 }
 
