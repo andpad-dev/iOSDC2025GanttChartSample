@@ -10,6 +10,16 @@ import UIKit
 
 final class GanttChartViewLayout: UICollectionViewLayout {
     
+    override func layoutAttributesForElements(
+        in rect: CGRect
+    ) -> [UICollectionViewLayoutAttributes]? {
+        // TODO: Implement
+        let dummy = UICollectionViewLayoutAttributes(
+            forCellWith: IndexPath(item: 0, section: 0)
+        )
+        dummy.frame = .init(x: 20, y: 40, width: 300, height: 36)
+        return [dummy]
+    }
 }
 
 #Preview {
