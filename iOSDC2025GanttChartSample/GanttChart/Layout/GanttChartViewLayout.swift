@@ -10,6 +10,28 @@ import UIKit
 
 final class GanttChartViewLayout: UICollectionViewLayout {
     
+    struct LayoutAttributes {
+        
+        typealias Dictionary = [
+            IndexPath: UICollectionViewLayoutAttributes
+        ]
+        
+        var items = Dictionary()
+        
+        /// Extracts and returns the layout attributes for the visible elements in the specified rectangle.
+        func forVisibleElements(
+            in rect: CGRect
+        ) -> [UICollectionViewLayoutAttributes] {
+            let attributesForVisibleItems = items.values
+                .filter { $0.frame.intersects(rect) }
+            return attributesForVisibleItems
+        }
+    }
+    
+    private var layoutAttributes = LayoutAttributes()
+    
+    // MARK: - Lifecycle
+    
     override func layoutAttributesForElements(
         in rect: CGRect
     ) -> [UICollectionViewLayoutAttributes]? {
