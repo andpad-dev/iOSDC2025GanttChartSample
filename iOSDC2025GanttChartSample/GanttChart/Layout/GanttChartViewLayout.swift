@@ -32,16 +32,14 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     // MARK: - Lifecycle
     
-    override func layoutAttributesForElements(
-        in rect: CGRect
-    ) -> [UICollectionViewLayoutAttributes]? {
-        // TODO: Implement
+    override func prepare() {
+        // TODO: Implement
         let cellHeight: CGFloat = 36
         let spacing: CGFloat = 8
-        var dummyAttributes: [UICollectionViewLayoutAttributes] = []
         for i in 0..<5 {
+            let indexPath = IndexPath(item: i, section: 0)
             let dummy = UICollectionViewLayoutAttributes(
-                forCellWith: IndexPath(item: i, section: 0)
+                forCellWith: indexPath
             )
             dummy.frame = .init(
                 x: 20,
@@ -49,9 +47,14 @@ final class GanttChartViewLayout: UICollectionViewLayout {
                 width: 300,
                 height: cellHeight
             )
-            dummyAttributes.append(dummy)
+            layoutAttributes.items[indexPath] = dummy
         }
-        return dummyAttributes
+    }
+    
+    override func layoutAttributesForElements(
+        in rect: CGRect
+    ) -> [UICollectionViewLayoutAttributes]? {
+        layoutAttributes.forVisibleElements(in: rect)
     }
 }
 
