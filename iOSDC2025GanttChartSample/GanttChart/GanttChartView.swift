@@ -45,10 +45,11 @@ final class GanttChartView: UIView {
         guard let self else { return nil }
         switch itemID {
         case .workItem(let workItemID):
+            let workItem = workItemProvider(workItemID)
             return collectionView.dequeueConfiguredReusableCell(
                 using: workItemCellRegistration,
                 for: indexPath,
-                item: .init(title: "\(workItemID)")
+                item: .init(title: workItem.name)
             )
         }
     }
