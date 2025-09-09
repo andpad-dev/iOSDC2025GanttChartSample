@@ -123,11 +123,24 @@ final class GanttChartView: UIView {
 
 extension GanttChartView: GanttChartViewLayoutDataSource {
     
+    func itemIDs(
+        in ganttChartViewLayout: GanttChartViewLayout
+    ) -> [ItemID] {
+        dataSource.snapshot().itemIdentifiers
+    }
+    
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
         itemIDAt indexPath: IndexPath
     ) -> ItemID? {
         dataSource.itemIdentifier(for: indexPath)
+    }
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        workItemWith id: WorkItem.ID
+    ) -> WorkItem {
+        workItemProvider(id)
     }
 }
 

@@ -10,10 +10,20 @@ import UIKit
 
 @MainActor
 protocol GanttChartViewLayoutDataSource: AnyObject {
+    
+    func itemIDs(
+        in ganttChartViewLayout: GanttChartViewLayout
+    ) -> [GanttChartView.ItemID]
+    
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
         itemIDAt indexPath: IndexPath
     ) -> GanttChartView.ItemID?
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        workItemWith id: WorkItem.ID
+    ) -> WorkItem
 }
 
 final class GanttChartViewLayout: UICollectionViewLayout {
