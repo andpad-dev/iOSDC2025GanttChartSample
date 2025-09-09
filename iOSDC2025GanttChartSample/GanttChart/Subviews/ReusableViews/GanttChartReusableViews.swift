@@ -23,6 +23,8 @@ class GanttChartReusableView: UICollectionReusableView {
     func setUpViews() {}
 }
 
+// MARK: - Supplementary views -
+
 final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
     
     private let titleLabel: UILabel = {
@@ -49,6 +51,16 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
     
     func configure(workItemGroup: WorkItemGroup) {
         titleLabel.text = workItemGroup.name
+    }
+}
+
+// MARK: - Decoration views -
+
+final class GanttChartSeparator: GanttChartReusableView {
+    
+    override func setUpViews() {
+        isUserInteractionEnabled = false
+        backgroundColor = .opaqueSeparator
     }
 }
 
