@@ -123,9 +123,16 @@ struct GanttChart: UIViewRepresentable {
     func updateUIView(_ uiView: GanttChartView, context: Context) {
         switch state.loadingResult {
         case .success(let workItemGroups):
-            uiView.configure(workItemGroups: workItemGroups)
+            let dates = state.chartDates(for: workItemGroups)
+            uiView.configure(
+                dates: dates,
+                workItemGroups: workItemGroups
+            )
         case .failure:
-            uiView.configure(workItemGroups: [])
+            uiView.configure(
+                dates: [],
+                workItemGroups: []
+            )
         case nil:
             break
         }

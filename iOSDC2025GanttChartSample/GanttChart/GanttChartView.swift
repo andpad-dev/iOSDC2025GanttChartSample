@@ -11,10 +11,12 @@ import UIKit
 final class GanttChartView: UIView {
     
     enum SectionID: Hashable, Sendable {
+        case dates
         case workItemGroup(WorkItemGroup.ID)
     }
     
     enum ItemID: Hashable, Sendable {
+        case date(Date)
         case workItem(WorkItem.ID)
     }
     
@@ -34,6 +36,7 @@ final class GanttChartView: UIView {
         return collectionView
     }()
     
+    private let dateCellRegistration = DateCellRegistration()
     private let workItemCellRegistration = WorkItemCellRegistration()
     
     private lazy var dataSource = UICollectionViewDiffableDataSource<SectionID, ItemID>(
@@ -41,6 +44,12 @@ final class GanttChartView: UIView {
     ) { [weak self] collectionView, indexPath, itemID in
         guard let self else { return nil }
         switch itemID {
+        case .date(let date):
+            return collectionView.dequeueConfiguredReusableCell(
+                using: dateCellRegistration,
+                for: indexPath,
+                item: .init(date: date)
+            )
         case .workItem(let workItemID):
             let workItem = workItemProvider(workItemID)
             return collectionView.dequeueConfiguredReusableCell(
@@ -89,8 +98,16 @@ final class GanttChartView: UIView {
     
     // MARK: - Methods
     
-    func configure(workItemGroups: [WorkItemGroup]) {
+    func configure(
+        dates: [Date],
+        workItemGroups: [WorkItemGroup]
+    ) {
         var snapshot = Snapshot()
+        snapshot.appendSections([.dates])
+        snapshot.appendItems(
+            dates.map(ItemID.date),
+            toSection: .dates
+        )
         for group in workItemGroups {
             let sectionID = SectionID.workItemGroup(group.id)
             snapshot.appendSections([sectionID])
