@@ -77,13 +77,17 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             var cellMinY: CGFloat
         }
         
+        weak var collectionView: UICollectionView?
+        
         var dates: [Date: DateReference] = [:]
         var workItems: [WorkItem.ID: WorkItemReference] = [:]
         
         var contentSize: CGSize = .zero
     }
     
-    private var references = LayoutReferences()
+    private lazy var references = LayoutReferences(
+        collectionView: collectionView
+    )
     
     // MARK: - Overrides
     
