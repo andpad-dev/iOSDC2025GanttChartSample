@@ -86,11 +86,12 @@
 				};
 			};
 			buildConfigurationList = A7FDD0942E6A824D00FC6B61 /* Build configuration list for PBXProject "iOSDC2025GanttChartSample" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = A7FDD0902E6A824D00FC6B61;
 			minimizedProjectReferenceProxies = 1;
