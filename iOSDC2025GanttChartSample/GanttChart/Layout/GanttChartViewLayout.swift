@@ -93,34 +93,30 @@ extension GanttChartViewLayout {
     ) {
         switch itemID {
         case .date:
-            let cellSize = CGSize(width: 24, height: 48)
-            let cell = UICollectionViewLayoutAttributes(
-                forCellWith: indexPath
-            )
-            cell.frame = .init(
-                origin: .init(
-                    x: cellSize.width * CGFloat(indexPath.item),
-                    y: 0
-                ),
-                size: cellSize
-            )
-            layoutAttributes.items[indexPath] = cell
+            layoutAttributes.insert(forCellAt: indexPath) { cell in
+                let cellSize = CGSize(width: 24, height: 48)
+                cell.frame = .init(
+                    origin: .init(
+                        x: cellSize.width * CGFloat(indexPath.item),
+                        y: 0
+                    ),
+                    size: cellSize
+                )
+            }
         case .workItem:
-            // TODO: Layout
-            let cellSize = CGSize(width: 100, height: 36)
-            let horizontalSpacing: CGFloat = 16
-            let verticalSpacing: CGFloat = 8
-            let cell = UICollectionViewLayoutAttributes(
-                forCellWith: indexPath
-            )
-            cell.frame = .init(
-                origin: .init(
-                    x: (cellSize.width + horizontalSpacing) * CGFloat(indexPath.section - 1),
-                    y: (cellSize.height + verticalSpacing) * CGFloat(indexPath.item) + 52
-                ),
-                size: cellSize
-            )
-            layoutAttributes.items[indexPath] = cell
+            layoutAttributes.insert(forCellAt: indexPath) { cell in
+                // TODO: Layout
+                let cellSize = CGSize(width: 100, height: 36)
+                let horizontalSpacing: CGFloat = 16
+                let verticalSpacing: CGFloat = 8
+                cell.frame = .init(
+                    origin: .init(
+                        x: (cellSize.width + horizontalSpacing) * CGFloat(indexPath.section - 1),
+                        y: (cellSize.height + verticalSpacing) * CGFloat(indexPath.item) + 52
+                    ),
+                    size: cellSize
+                )
+            }
         }
     }
 }
