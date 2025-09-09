@@ -123,6 +123,17 @@ final class GanttChartView: UIView {
         }
         dataSource.apply(snapshot)
     }
+    
+    private func workItemGroupID(
+        atSection section: Int
+    ) -> WorkItemGroup.ID? {
+        switch dataSource.sectionIdentifier(for: section) {
+        case .workItemGroup(let groupID):
+            groupID
+        default:
+            nil
+        }
+    }
 }
 
 extension GanttChartView: GanttChartViewLayoutDataSource {
