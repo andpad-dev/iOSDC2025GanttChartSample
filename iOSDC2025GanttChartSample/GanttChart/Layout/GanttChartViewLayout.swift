@@ -36,9 +36,16 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     /// The layout information that serves as a reference for each element’s layout.
     struct LayoutReferences {
+        var contentSize: CGSize = .zero
     }
     
     private var references = LayoutReferences()
+    
+    // MARK: - Overrides
+    
+    override var collectionViewContentSize: CGSize {
+        references.contentSize
+    }
     
     // MARK: - Lifecycle
     
@@ -65,6 +72,9 @@ final class GanttChartViewLayout: UICollectionViewLayout {
                 layoutAttributes.items[indexPath] = dummy
             }
         }
+        
+        let dummyContentSize = CGSize(width: 1500, height: 1000)
+        references.contentSize = dummyContentSize
     }
     
     override func layoutAttributesForElements(
