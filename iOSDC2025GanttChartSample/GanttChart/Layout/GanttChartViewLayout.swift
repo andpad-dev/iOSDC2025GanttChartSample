@@ -28,6 +28,8 @@ protocol GanttChartViewLayoutDataSource: AnyObject {
 
 final class GanttChartViewLayout: UICollectionViewLayout {
     
+    typealias ElementKind = GanttChartView.ElementKind
+    
     weak var dataSource: (any GanttChartViewLayoutDataSource)?
     
     // MARK: Layout attributes
@@ -39,6 +41,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         ]
         
         var items = Dictionary()
+        var supplementaryViews = [ElementKind: Dictionary]()
         
         /// Extracts and returns the layout attributes for the visible elements in the specified rectangle.
         func forVisibleElements(
@@ -46,7 +49,12 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         ) -> [UICollectionViewLayoutAttributes] {
             let attributesForVisibleItems = items.values
                 .filter { $0.frame.intersects(rect) }
+            let attributesForVisibleSupplementaryViews = supplementaryViews.values
+                .flatMap(\.values)
+                .filter { $0.frame.intersects(rect) }
+            
             return attributesForVisibleItems
+            + attributesForVisibleSupplementaryViews
         }
     }
     
