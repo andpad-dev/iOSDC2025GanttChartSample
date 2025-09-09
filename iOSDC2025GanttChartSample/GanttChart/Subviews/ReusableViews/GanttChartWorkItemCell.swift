@@ -18,10 +18,12 @@ final class GanttChartWorkItemCell: UICollectionViewCell {
         contentConfiguration = UIHostingConfiguration {
             Text(configuration.title)
                 .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 8)
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .leading
+                )
                 .padding(.horizontal, 6)
-                .frame(maxHeight: .infinity)
                 .background(.yellow)
                 .clipShape(.rect(cornerRadius: 4))
         }

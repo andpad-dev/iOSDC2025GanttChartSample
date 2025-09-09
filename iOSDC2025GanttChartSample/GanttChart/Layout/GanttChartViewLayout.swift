@@ -84,6 +84,9 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     override func prepare() {
         guard let dataSource, let collectionView else { return }
         
+        let itemIDs = dataSource.itemIDs(in: self)
+        references.prepare(with: itemIDs)
+        
         for section in 0..<collectionView.numberOfSections {
             for item in 0..<collectionView.numberOfItems(inSection: section) {
                 let indexPath = IndexPath(item: item, section: section)
@@ -94,10 +97,6 @@ final class GanttChartViewLayout: UICollectionViewLayout {
                 prepareLayoutAttributes(for: itemID, at: indexPath)
             }
         }
-        
-        // TODO: Implement
-        let dummyContentSize = CGSize(width: 1500, height: 1000)
-        references.contentSize = dummyContentSize
     }
     
     override func layoutAttributesForElements(
@@ -113,34 +112,21 @@ extension GanttChartViewLayout {
         for itemID: GanttChartView.ItemID,
         at indexPath: IndexPath
     ) {
+        guard let dataSource else { return }
         switch itemID {
-        case .date:
+        case .date(let date):
             layoutAttributes.insert(forCellAt: indexPath) { cell in
-                let cellSize = references.dateCellSize
-                cell.frame = .init(
-                    origin: .init(
-                        x: cellSize.width * CGFloat(indexPath.item),
-                        y: 0
-                    ),
-                    size: cellSize
-                )
+                let column = references.dateColumn(for: date)
+                cell.frame = column.dateCellFrame
             }
-        case .workItem:
+        case .workItem(let workItemID):
             layoutAttributes.insert(forCellAt: indexPath) { cell in
-                // TODO: Layout
-                let cellSize = CGSize(
-                    width: 100,
-                    height: references.workItemCellHeight
+                let workItem = dataSource.ganttChartViewLayout(
+                    self,
+                    workItemWith: workItemID
                 )
-                let horizontalSpacing: CGFloat = 16
-                let verticalSpacing: CGFloat = 8
-                cell.frame = .init(
-                    origin: .init(
-                        x: (cellSize.width + horizontalSpacing) * CGFloat(indexPath.section - 1),
-                        y: (cellSize.height + verticalSpacing) * CGFloat(indexPath.item) + 52
-                    ),
-                    size: cellSize
-                )
+                let row = references.workItemRow(for: workItem)
+                cell.frame = row.workItemCellFrame
             }
         }
     }
