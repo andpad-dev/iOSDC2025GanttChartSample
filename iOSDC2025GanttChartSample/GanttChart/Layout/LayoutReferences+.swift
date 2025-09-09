@@ -119,6 +119,24 @@ extension GanttChartViewLayout.LayoutReferences {
     
     // MARK: - Work item area
     
+    struct WorkItemGroupSection {
+        var headerFrame: CGRect
+    }
+    
+    func workItemGroupSection(
+        for workItemGroup: WorkItemGroup
+    ) -> WorkItemGroupSection {
+        WorkItemGroupSection(
+            headerFrame: .init(
+                origin: .init(
+                    x: 0,
+                    y: workItemGroups[workItemGroup.id]!.headerMinY
+                ),
+                size: workItemGroupHeaderSize
+            )
+        )
+    }
+    
     struct WorkItemRow {
         var workItemCellFrame: CGRect
     }
