@@ -168,6 +168,12 @@ final class GanttChartView: UIView {
 
 extension GanttChartView: GanttChartViewLayoutDataSource {
     
+    func sectionIDs(
+        in ganttChartViewLayout: GanttChartViewLayout
+    ) -> [SectionID] {
+        dataSource.snapshot().sectionIdentifiers
+    }
+    
     func itemIDs(
         in ganttChartViewLayout: GanttChartViewLayout
     ) -> [ItemID] {

@@ -11,6 +11,10 @@ import UIKit
 @MainActor
 protocol GanttChartViewLayoutDataSource: AnyObject {
     
+    func sectionIDs(
+        in ganttChartViewLayout: GanttChartViewLayout
+    ) -> [GanttChartView.SectionID]
+    
     func itemIDs(
         in ganttChartViewLayout: GanttChartViewLayout
     ) -> [GanttChartView.ItemID]
