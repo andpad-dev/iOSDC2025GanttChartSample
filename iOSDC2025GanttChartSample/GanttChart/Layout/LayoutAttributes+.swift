@@ -9,6 +9,8 @@ import UIKit
 
 extension GanttChartViewLayout.LayoutAttributes {
     
+    typealias ElementKind = GanttChartView.ElementKind
+    
     @discardableResult
     mutating func insert(
         forCellAt indexPath: IndexPath,
@@ -24,7 +26,7 @@ extension GanttChartViewLayout.LayoutAttributes {
     
     @discardableResult
     mutating func insert(
-        forSupplementaryViewOf elementKind: GanttChartView.ElementKind,
+        forSupplementaryViewOf elementKind: ElementKind,
         at indexPath: IndexPath,
         configurator: (UICollectionViewLayoutAttributes) -> Void
     ) -> UICollectionViewLayoutAttributes {
@@ -35,5 +37,20 @@ extension GanttChartViewLayout.LayoutAttributes {
         configurator(supplementaryView)
         supplementaryViews[elementKind, default: [:]][indexPath] = supplementaryView
         return supplementaryView
+    }
+    
+    @discardableResult
+    mutating func insert(
+        forDecorationViewOf elementKind: ElementKind,
+        at indexPath: IndexPath,
+        configurator: (UICollectionViewLayoutAttributes) -> Void
+    ) -> UICollectionViewLayoutAttributes {
+        let decorationView = UICollectionViewLayoutAttributes(
+            forDecorationViewOfKind: elementKind.rawValue,
+            with: indexPath
+        )
+        configurator(decorationView)
+        decorationViews[elementKind, default: [:]][indexPath] = decorationView
+        return decorationView
     }
 }
