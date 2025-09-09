@@ -71,7 +71,7 @@ extension GanttChartViewLayout.LayoutReferences {
         for case .date(let date) in itemIDs {
             let minX: CGFloat = if let previousDate {
                 // itemIDs are assumed to be sorted by date
-                dates[previousDate]!.cellFrame.maxX
+                dates[previousDate]!.cellFrame.maxX + separatorThickness
             } else {
                 0.0
             }
@@ -117,11 +117,24 @@ extension GanttChartViewLayout.LayoutReferences {
     
     struct DateColumn: Equatable {
         var dateCellFrame: CGRect
+        var leadingSeparatorFrame: CGRect
     }
     
     func dateColumn(for date: Date) -> DateColumn {
-        DateColumn(
-            dateCellFrame: dates[date]!.cellFrame
+        let cellFrame = dates[date]!.cellFrame
+        let leadingSeparatorFrame = {
+            let minY = cellFrame.minY
+            let maxY = contentSize.height
+            return CGRect(
+                x: cellFrame.minX - separatorThickness,
+                y: minY,
+                width: separatorThickness,
+                height: maxY - minY
+            )
+        }()
+        return DateColumn(
+            dateCellFrame: cellFrame,
+            leadingSeparatorFrame: leadingSeparatorFrame
         )
     }
     

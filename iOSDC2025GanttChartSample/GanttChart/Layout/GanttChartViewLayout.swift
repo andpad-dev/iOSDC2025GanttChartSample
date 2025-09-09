@@ -231,9 +231,15 @@ extension GanttChartViewLayout {
         guard let dataSource else { return }
         switch itemID {
         case .date(let date):
+            let dateColumn = references.dateColumn(for: date)
             layoutAttributes.insert(forCellAt: indexPath) { cell in
-                let column = references.dateColumn(for: date)
-                cell.frame = column.dateCellFrame
+                cell.frame = dateColumn.dateCellFrame
+            }
+            layoutAttributes.insert(
+                forDecorationViewOf: .separator(for: .leading),
+                at: indexPath
+            ) { separator in
+                separator.frame = dateColumn.leadingSeparatorFrame
             }
         case .workItem(let workItemID):
             layoutAttributes.insert(forCellAt: indexPath) { cell in
