@@ -89,6 +89,20 @@ extension GanttChartViewLayout.LayoutReferences {
 
 extension GanttChartViewLayout.LayoutReferences {
     
+    // MARK: - Date area
+    
+    struct DateColumn: Equatable {
+        var dateCellFrame: CGRect
+    }
+    
+    func dateColumn(for date: Date) -> DateColumn {
+        DateColumn(
+            dateCellFrame: dates[date]!.cellFrame
+        )
+    }
+    
+    // MARK: - Work item area
+    
     struct WorkItemRow {
         var workItemCellFrame: CGRect
     }
