@@ -56,6 +56,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         
         var items = Dictionary()
         var supplementaryViews = [ElementKind: Dictionary]()
+        var decorationViews = [ElementKind: Dictionary]()
         
         /// Extracts and returns the layout attributes for the visible elements in the specified rectangle.
         func forVisibleElements(
@@ -66,9 +67,13 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             let attributesForVisibleSupplementaryViews = supplementaryViews.values
                 .flatMap(\.values)
                 .filter { $0.frame.intersects(rect) }
+            let attributesForVisibleDecorationViews = decorationViews.values
+                .flatMap(\.values)
+                .filter { $0.frame.intersects(rect) }
             
             return attributesForVisibleItems
             + attributesForVisibleSupplementaryViews
+            + attributesForVisibleDecorationViews
         }
     }
     
