@@ -15,6 +15,13 @@ extension GanttChartViewLayout.LayoutReferences {
         .init(width: 24, height: 48)
     }
     
+    var workItemGroupHeaderSize: CGSize {
+        .init(
+            width: collectionView?.bounds.width ?? 0,
+            height: 32
+        )
+    }
+    
     var workItemCellHeight: CGFloat {
         30
     }
