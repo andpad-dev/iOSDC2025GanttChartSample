@@ -189,6 +189,13 @@ extension GanttChartView: GanttChartViewLayoutDataSource {
     
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
+        workItemGroupWith id: WorkItemGroup.ID
+    ) -> WorkItemGroup {
+        workItemGroupProvider(id)
+    }
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
         workItemWith id: WorkItem.ID
     ) -> WorkItem {
         workItemProvider(id)

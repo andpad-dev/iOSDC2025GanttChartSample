@@ -26,6 +26,11 @@ protocol GanttChartViewLayoutDataSource: AnyObject {
     
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
+        workItemGroupWith id: WorkItemGroup.ID
+    ) -> WorkItemGroup
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
         workItemWith id: WorkItem.ID
     ) -> WorkItem
 }
