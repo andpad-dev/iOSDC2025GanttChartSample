@@ -46,6 +46,18 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     /// The layout information that serves as a reference for each element’s layout.
     struct LayoutReferences {
+        
+        struct DateReference {
+            var cellFrame: CGRect
+        }
+        
+        struct WorkItemReference {
+            var cellMinY: CGFloat
+        }
+        
+        var dates: [Date: DateReference] = [:]
+        var workItems: [WorkItem.ID: WorkItemReference] = [:]
+        
         var contentSize: CGSize = .zero
     }
     
