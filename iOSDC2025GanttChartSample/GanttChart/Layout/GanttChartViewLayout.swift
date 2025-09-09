@@ -60,29 +60,20 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     // MARK: - Lifecycle
     
     override func prepare() {
-        guard let collectionView else { return }
+        guard let dataSource, let collectionView else { return }
         
-        // TODO: Implement
-        let cellSize = CGSize(width: 100, height: 36)
-        let horizontalSpacing: CGFloat = 16
-        let verticalSpacing: CGFloat = 8
         for section in 0..<collectionView.numberOfSections {
             for item in 0..<collectionView.numberOfItems(inSection: section) {
                 let indexPath = IndexPath(item: item, section: section)
-                let dummy = UICollectionViewLayoutAttributes(
-                    forCellWith: indexPath
-                )
-                dummy.frame = .init(
-                    origin: .init(
-                        x: (cellSize.width + horizontalSpacing) * CGFloat(section),
-                        y: (cellSize.height + verticalSpacing) * CGFloat(item)
-                    ),
-                    size: cellSize
-                )
-                layoutAttributes.items[indexPath] = dummy
+                let itemID = dataSource.ganttChartViewLayout(
+                    self,
+                    itemIDAt: indexPath
+                )!
+                prepareLayoutAttributes(for: itemID, at: indexPath)
             }
         }
         
+        // TODO: Implement
         let dummyContentSize = CGSize(width: 1500, height: 1000)
         references.contentSize = dummyContentSize
     }
@@ -91,6 +82,46 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         in rect: CGRect
     ) -> [UICollectionViewLayoutAttributes]? {
         layoutAttributes.forVisibleElements(in: rect)
+    }
+}
+
+extension GanttChartViewLayout {
+    
+    private func prepareLayoutAttributes(
+        for itemID: GanttChartView.ItemID,
+        at indexPath: IndexPath
+    ) {
+        switch itemID {
+        case .date:
+            let cellSize = CGSize(width: 24, height: 48)
+            let cell = UICollectionViewLayoutAttributes(
+                forCellWith: indexPath
+            )
+            cell.frame = .init(
+                origin: .init(
+                    x: cellSize.width * CGFloat(indexPath.item),
+                    y: 0
+                ),
+                size: cellSize
+            )
+            layoutAttributes.items[indexPath] = cell
+        case .workItem:
+            // TODO: Layout
+            let cellSize = CGSize(width: 100, height: 36)
+            let horizontalSpacing: CGFloat = 16
+            let verticalSpacing: CGFloat = 8
+            let cell = UICollectionViewLayoutAttributes(
+                forCellWith: indexPath
+            )
+            cell.frame = .init(
+                origin: .init(
+                    x: (cellSize.width + horizontalSpacing) * CGFloat(indexPath.section - 1),
+                    y: (cellSize.height + verticalSpacing) * CGFloat(indexPath.item) + 52
+                ),
+                size: cellSize
+            )
+            layoutAttributes.items[indexPath] = cell
+        }
     }
 }
 
