@@ -15,6 +15,10 @@ extension GanttChartView {
     
     typealias CellRegistration = UICollectionView.CellRegistration
     
+    typealias DateCellRegistration = CellRegistration<
+        GanttChartDateCell,
+        GanttChartDateCell.Configuration
+    >
     typealias WorkItemCellRegistration = CellRegistration<
         GanttChartWorkItemCell,
         GanttChartWorkItemCell.Configuration
@@ -22,6 +26,15 @@ extension GanttChartView {
 }
 
 // MARK: - Cell registrations -
+
+extension GanttChartView.DateCellRegistration {
+    
+    init() {
+        self.init { cell, _, configuration in
+            cell.configure(with: configuration)
+        }
+    }
+}
 
 extension GanttChartView.WorkItemCellRegistration {
     
