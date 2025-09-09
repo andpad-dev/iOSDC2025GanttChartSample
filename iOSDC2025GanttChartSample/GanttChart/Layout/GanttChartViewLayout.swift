@@ -8,7 +8,17 @@
 import SwiftUI
 import UIKit
 
+@MainActor
+protocol GanttChartViewLayoutDataSource: AnyObject {
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        itemIDAt indexPath: IndexPath
+    ) -> GanttChartView.ItemID?
+}
+
 final class GanttChartViewLayout: UICollectionViewLayout {
+    
+    weak var dataSource: (any GanttChartViewLayoutDataSource)?
     
     // MARK: Layout attributes
     
