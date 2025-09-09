@@ -5,7 +5,7 @@
 //  Created by 西悠作 on 2025/09/09.
 //
 
-import Foundation
+import SwiftUI
 
 // MARK: - References -
 
@@ -18,4 +18,73 @@ extension GanttChartViewLayout.LayoutReferences {
     var workItemCellHeight: CGFloat {
         30
     }
+}
+
+// MARK: - Preparation -
+
+extension GanttChartViewLayout.LayoutReferences {
+    
+    mutating func prepare(
+        with itemIDs: [GanttChartView.ItemID]
+    ) {
+        let finalContentSize: CGSize
+        defer {
+            contentSize = finalContentSize
+        }
+        
+        let (dateAreaBottomY, lastDate) = prepareDateArea(with: itemIDs)
+        guard let lastDate else {
+            finalContentSize = .zero
+            return
+        }
+        
+        // Update this value incrementally while calculating each element's Y-coordinate
+        var bottomY = dateAreaBottomY
+        
+        prepareWorkItemArea(updatingBottomY: &bottomY, with: itemIDs)
+        
+        finalContentSize = .init(
+            width: dates[lastDate]!.cellFrame.maxX,
+            height: bottomY
+        )
+    }
+    
+    private mutating func prepareDateArea(
+        with itemIDs: [GanttChartView.ItemID]
+    ) -> (dateAreaBottomY: CGFloat, lastDate: Date?) {
+        var previousDate: Date?
+        for case .date(let date) in itemIDs {
+            let minX: CGFloat = if let previousDate {
+                // itemIDs are assumed to be sorted by date
+                dates[previousDate]!.cellFrame.maxX
+            } else {
+                0.0
+            }
+            let frame = CGRect(
+                origin: .init(x: minX, y: 0),
+                size: dateCellSize
+            )
+            dates[date] = .init(cellFrame: frame)
+            previousDate = date
+        }
+        return (
+            dateAreaBottomY: dateCellSize.height,
+            lastDate: previousDate
+        )
+    }
+    
+    private mutating func prepareWorkItemArea(
+        updatingBottomY bottomY: inout CGFloat,
+        with itemIDs: [GanttChartView.ItemID]
+    ) {
+        let verticalSpacing = 4.0
+        for case .workItem(let workItemID) in itemIDs {
+            workItems[workItemID] = .init(cellMinY: bottomY)
+            bottomY += workItemCellHeight + verticalSpacing
+        }
+    }
+}
+
+#Preview {
+    ContentView()
 }
