@@ -85,6 +85,29 @@ extension GanttChartViewLayout.LayoutReferences {
     }
 }
 
+// MARK: - Frames for each elements -
+
+extension GanttChartViewLayout.LayoutReferences {
+    
+    struct WorkItemRow {
+        var workItemCellFrame: CGRect
+    }
+    
+    func workItemRow(for workItem: WorkItem) -> WorkItemRow {
+        let schedule = workItem.schedule
+        let minX = dates[schedule.lowerBound]!.cellFrame.minX
+        let maxX = dates[schedule.upperBound]!.cellFrame.maxX
+        return WorkItemRow(
+            workItemCellFrame: .init(
+                x: minX,
+                y: workItems[workItem.id]!.cellMinY,
+                width: maxX - minX,
+                height: workItemCellHeight
+            )
+        )
+    }
+}
+
 #Preview {
     ContentView()
 }
