@@ -25,6 +25,10 @@ extension GanttChartViewLayout.LayoutReferences {
     var workItemCellHeight: CGFloat {
         30
     }
+    
+    var separatorThickness: CGFloat {
+        1 / (collectionView?.traitCollection.displayScale ?? 1)
+    }
 }
 
 // MARK: - Preparation -
