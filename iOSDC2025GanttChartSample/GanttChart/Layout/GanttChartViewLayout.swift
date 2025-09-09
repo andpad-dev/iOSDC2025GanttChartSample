@@ -106,7 +106,7 @@ extension GanttChartViewLayout {
         switch itemID {
         case .date:
             layoutAttributes.insert(forCellAt: indexPath) { cell in
-                let cellSize = CGSize(width: 24, height: 48)
+                let cellSize = references.dateCellSize
                 cell.frame = .init(
                     origin: .init(
                         x: cellSize.width * CGFloat(indexPath.item),
@@ -118,7 +118,10 @@ extension GanttChartViewLayout {
         case .workItem:
             layoutAttributes.insert(forCellAt: indexPath) { cell in
                 // TODO: Layout
-                let cellSize = CGSize(width: 100, height: 36)
+                let cellSize = CGSize(
+                    width: 100,
+                    height: references.workItemCellHeight
+                )
                 let horizontalSpacing: CGFloat = 16
                 let verticalSpacing: CGFloat = 8
                 cell.frame = .init(
