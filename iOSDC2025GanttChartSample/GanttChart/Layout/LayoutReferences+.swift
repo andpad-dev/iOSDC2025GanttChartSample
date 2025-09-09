@@ -94,8 +94,12 @@ extension GanttChartViewLayout.LayoutReferences {
     ) {
         let verticalSpacing = 4.0
         for group in groups {
+            bottomY += separatorThickness // Header top separator
             workItemGroups[group.id] = .init(headerMinY: bottomY)
-            bottomY += workItemGroupHeaderSize.height + verticalSpacing
+            
+            bottomY += workItemGroupHeaderSize.height
+            + separatorThickness // Header bottom separator
+            + verticalSpacing
             
             for workItem in group.children {
                 workItems[workItem.id] = .init(cellMinY: bottomY)
@@ -124,19 +128,39 @@ extension GanttChartViewLayout.LayoutReferences {
     // MARK: - Work item area
     
     struct WorkItemGroupSection {
-        var headerFrame: CGRect
+        
+        struct Header {
+            var frame: CGRect
+            var topSeparatorFrame: CGRect
+            var bottomSeparatorFrame: CGRect
+        }
+        
+        var header: Header
     }
     
     func workItemGroupSection(
         for workItemGroup: WorkItemGroup
     ) -> WorkItemGroupSection {
-        WorkItemGroupSection(
-            headerFrame: .init(
-                origin: .init(
-                    x: 0,
-                    y: workItemGroups[workItemGroup.id]!.headerMinY
-                ),
-                size: workItemGroupHeaderSize
+        let headerFrame = CGRect(
+            origin: .init(
+                x: 0,
+                y: workItemGroups[workItemGroup.id]!.headerMinY
+            ),
+            size: workItemGroupHeaderSize
+        )
+        let topSeparatorFrame = CGRect(
+            x: headerFrame.minX,
+            y: headerFrame.minY - separatorThickness,
+            width: headerFrame.width,
+            height: separatorThickness
+        )
+        var bottomSeparatorFrame = topSeparatorFrame
+        bottomSeparatorFrame.origin.y = headerFrame.maxY
+        return WorkItemGroupSection(
+            header: .init(
+                frame: headerFrame,
+                topSeparatorFrame: topSeparatorFrame,
+                bottomSeparatorFrame: bottomSeparatorFrame
             )
         )
     }

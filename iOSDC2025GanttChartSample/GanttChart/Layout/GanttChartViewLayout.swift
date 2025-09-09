@@ -202,11 +202,24 @@ extension GanttChartViewLayout {
             let groupSection = references.workItemGroupSection(
                 for: group
             )
+            let sectionHeader = groupSection.header
             layoutAttributes.insert(
                 forSupplementaryViewOf: .workItemGroupHeader,
                 at: indexPath
             ) { header in
-                header.frame = groupSection.headerFrame
+                header.frame = sectionHeader.frame
+            }
+            layoutAttributes.insert(
+                forDecorationViewOf: .separator(for: .top),
+                at: indexPath
+            ) { separator in
+                separator.frame = sectionHeader.topSeparatorFrame
+            }
+            layoutAttributes.insert(
+                forDecorationViewOf: .separator(for: .bottom),
+                at: indexPath
+            ) { separator in
+                separator.frame = sectionHeader.bottomSeparatorFrame
             }
         }
     }
