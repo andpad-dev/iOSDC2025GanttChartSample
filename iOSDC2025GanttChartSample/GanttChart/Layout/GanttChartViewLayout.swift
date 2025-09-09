@@ -10,6 +10,8 @@ import UIKit
 
 final class GanttChartViewLayout: UICollectionViewLayout {
     
+    // MARK: Layout attributes
+    
     struct LayoutAttributes {
         
         typealias Dictionary = [
@@ -29,6 +31,14 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     }
     
     private var layoutAttributes = LayoutAttributes()
+    
+    // MARK: Layout references
+    
+    /// The layout information that serves as a reference for each element’s layout.
+    struct LayoutReferences {
+    }
+    
+    private var references = LayoutReferences()
     
     // MARK: - Lifecycle
     
