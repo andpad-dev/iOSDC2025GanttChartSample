@@ -27,8 +27,9 @@ final class GanttChartView: UIView {
     
     // MARK: UI components
     
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = GanttChartViewLayout()
+        layout.dataSource = self
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: layout
@@ -117,6 +118,16 @@ final class GanttChartView: UIView {
             )
         }
         dataSource.apply(snapshot)
+    }
+}
+
+extension GanttChartView: GanttChartViewLayoutDataSource {
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        itemIDAt indexPath: IndexPath
+    ) -> ItemID? {
+        dataSource.itemIdentifier(for: indexPath)
     }
 }
 
