@@ -73,6 +73,10 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             var cellFrame: CGRect
         }
         
+        struct WorkItemGroupReference {
+            var headerMinY: CGFloat
+        }
+        
         struct WorkItemReference {
             var cellMinY: CGFloat
         }
@@ -80,6 +84,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         weak var collectionView: UICollectionView?
         
         var dates: [Date: DateReference] = [:]
+        var workItemGroups: [WorkItemGroup.ID: WorkItemGroupReference] = [:]
         var workItems: [WorkItem.ID: WorkItemReference] = [:]
         
         var contentSize: CGSize = .zero
