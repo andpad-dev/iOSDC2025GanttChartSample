@@ -21,4 +21,19 @@ extension GanttChartViewLayout.LayoutAttributes {
         items[indexPath] = cell
         return cell
     }
+    
+    @discardableResult
+    mutating func insert(
+        forSupplementaryViewOf elementKind: GanttChartView.ElementKind,
+        at indexPath: IndexPath,
+        configurator: (UICollectionViewLayoutAttributes) -> Void
+    ) -> UICollectionViewLayoutAttributes {
+        let supplementaryView = UICollectionViewLayoutAttributes(
+            forSupplementaryViewOfKind: elementKind.rawValue,
+            with: indexPath
+        )
+        configurator(supplementaryView)
+        supplementaryViews[elementKind, default: [:]][indexPath] = supplementaryView
+        return supplementaryView
+    }
 }
