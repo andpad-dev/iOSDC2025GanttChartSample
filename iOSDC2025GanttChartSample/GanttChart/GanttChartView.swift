@@ -20,6 +20,10 @@ final class GanttChartView: UIView {
         case workItem(WorkItem.ID)
     }
     
+    struct ElementKind: Hashable, RawRepresentable {
+        let rawValue: String
+    }
+    
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>
     
     private var workItemGroupProvider: (WorkItemGroup.ID) -> WorkItemGroup
