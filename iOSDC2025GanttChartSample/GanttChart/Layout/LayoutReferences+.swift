@@ -32,7 +32,8 @@ extension GanttChartViewLayout.LayoutReferences {
 extension GanttChartViewLayout.LayoutReferences {
     
     mutating func prepare(
-        with itemIDs: [GanttChartView.ItemID]
+        workItemGroups: [WorkItemGroup],
+        itemIDs: [GanttChartView.ItemID]
     ) {
         let finalContentSize: CGSize
         defer {
@@ -48,7 +49,10 @@ extension GanttChartViewLayout.LayoutReferences {
         // Update this value incrementally while calculating each element's Y-coordinate
         var bottomY = dateAreaBottomY
         
-        prepareWorkItemArea(updatingBottomY: &bottomY, with: itemIDs)
+        prepareWorkItemArea(
+            updatingBottomY: &bottomY,
+            with: workItemGroups
+        )
         
         finalContentSize = .init(
             width: dates[lastDate]!.cellFrame.maxX,
@@ -82,12 +86,17 @@ extension GanttChartViewLayout.LayoutReferences {
     
     private mutating func prepareWorkItemArea(
         updatingBottomY bottomY: inout CGFloat,
-        with itemIDs: [GanttChartView.ItemID]
+        with groups: [WorkItemGroup]
     ) {
         let verticalSpacing = 4.0
-        for case .workItem(let workItemID) in itemIDs {
-            workItems[workItemID] = .init(cellMinY: bottomY)
-            bottomY += workItemCellHeight + verticalSpacing
+        for group in groups {
+            workItemGroups[group.id] = .init(headerMinY: bottomY)
+            bottomY += workItemGroupHeaderSize.height + verticalSpacing
+            
+            for workItem in group.children {
+                workItems[workItem.id] = .init(cellMinY: bottomY)
+                bottomY += workItemCellHeight + verticalSpacing
+            }
         }
     }
 }

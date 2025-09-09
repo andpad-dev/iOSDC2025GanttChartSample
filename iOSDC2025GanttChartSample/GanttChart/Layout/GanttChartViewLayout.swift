@@ -110,8 +110,23 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     override func prepare() {
         guard let dataSource, let collectionView else { return }
         
+        let sectionIDs = dataSource.sectionIDs(in: self)
+        let workItemGroups = sectionIDs.compactMap {
+            switch $0 {
+            case .workItemGroup(let groupID):
+                dataSource.ganttChartViewLayout(
+                    self,
+                    workItemGroupWith: groupID
+                )
+            default:
+                nil
+            }
+        }
         let itemIDs = dataSource.itemIDs(in: self)
-        references.prepare(with: itemIDs)
+        references.prepare(
+            workItemGroups: workItemGroups,
+            itemIDs: itemIDs
+        )
         
         for section in 0..<collectionView.numberOfSections {
             for item in 0..<collectionView.numberOfItems(inSection: section) {
