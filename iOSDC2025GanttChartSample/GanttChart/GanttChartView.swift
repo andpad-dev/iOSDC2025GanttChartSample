@@ -88,6 +88,9 @@ final class GanttChartView: UIView {
         // Subviews
         addSubview(collectionView)
         
+        // Supplementary views
+        setUpSupplementaryViews()
+        
         // Layout
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(
@@ -99,6 +102,33 @@ final class GanttChartView: UIView {
                 collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             ]
         )
+    }
+    
+    private func setUpSupplementaryViews() {
+        let workItemGroupHeaderRegistration = GanttChartWorkItemGroupHeaderRegistration(
+            elementKind: ElementKind.workItemGroupHeader.rawValue
+        ) { [weak self] header, _, indexPath in
+            guard let self else { return }
+            let groupID = workItemGroupID(
+                atSection: indexPath.section
+            )!
+            header.configure(
+                workItemGroup: workItemGroupProvider(groupID)
+            )
+        }
+        dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
+            return switch ElementKind(rawValue: elementKind) {
+            case .workItemGroupHeader:
+                collectionView.dequeueConfiguredReusableSupplementary(
+                    using: workItemGroupHeaderRegistration,
+                    for: indexPath
+                )
+            default:
+                preconditionFailure(
+                    "Unexpected element kind: \(elementKind)"
+                )
+            }
+        }
     }
     
     // MARK: - Methods

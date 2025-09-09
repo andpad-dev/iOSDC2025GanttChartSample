@@ -23,6 +23,14 @@ extension GanttChartView {
         GanttChartWorkItemCell,
         GanttChartWorkItemCell.Configuration
     >
+    
+    // MARK: - Supplementary registrations
+    
+    typealias SupplementaryRegistration = UICollectionView.SupplementaryRegistration
+    
+    typealias GanttChartWorkItemGroupHeaderRegistration = SupplementaryRegistration<
+        GanttChartWorkItemGroupHeaderView
+    >
 }
 
 // MARK: - Cell registrations -
