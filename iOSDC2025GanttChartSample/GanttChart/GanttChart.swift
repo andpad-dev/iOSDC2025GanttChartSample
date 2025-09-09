@@ -51,6 +51,58 @@ final class GanttChartState {
     func workItem(with id: WorkItem.ID) -> WorkItem? {
         cachedWorkItems[id]
     }
+    
+    func chartDates(
+        for workItemGroups: [WorkItemGroup]
+    ) -> [Date] {
+        guard let firstSchedule = workItemGroups.first?.children.first?.schedule else {
+            return []
+        }
+        var minDate = firstSchedule.lowerBound
+        var maxDate = firstSchedule.upperBound
+        for group in workItemGroups {
+            for workItem in group.children {
+                let schedule = workItem.schedule
+                minDate = Swift.min(minDate, schedule.lowerBound)
+                maxDate = Swift.max(maxDate, schedule.upperBound)
+            }
+        }
+        
+        // Add padding before and after the range
+        let paddingDay = 3
+        let calendar = Calendar.current
+        let leadingDate = calendar.date(
+            byAdding: .day,
+            value: -paddingDay,
+            to: minDate
+        )!
+        let trailingDate = calendar.date(
+            byAdding: .day,
+            value: paddingDay,
+            to: maxDate
+        )!
+        
+        // Enumerate dates in the range
+        var dates: [Date] = []
+        let enumerationStart = calendar.date(
+            byAdding: .day,
+            value: -1,
+            to: leadingDate
+        )!
+        calendar.enumerateDates(
+            startingAfter: enumerationStart,
+            matching: .init(hour: 0),
+            matchingPolicy: .nextTime
+        ) { date, exactMatch, stop in
+            guard let date else { return }
+            if date > trailingDate {
+                stop = true
+                return
+            }
+            dates.append(date)
+        }
+        return dates
+    }
 }
 
 struct GanttChart: UIViewRepresentable {
