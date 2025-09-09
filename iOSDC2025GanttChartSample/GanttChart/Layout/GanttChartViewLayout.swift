@@ -115,6 +115,25 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         references.contentSize
     }
     
+    // MARK: - Initializers
+    
+    override init() {
+        super.init()
+        
+        for edge in Edge.allCases {
+            register(
+                GanttChartSeparator.self,
+                forDecorationViewOfKind: ElementKind
+                    .separator(for: edge)
+                    .rawValue
+            )
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     
     override func prepare() {
