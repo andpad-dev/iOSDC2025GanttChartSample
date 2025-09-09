@@ -21,8 +21,13 @@ protocol GanttChartViewLayoutDataSource: AnyObject {
     
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
-        itemIDAt indexPath: IndexPath
-    ) -> GanttChartView.ItemID?
+        indexFor sectionID: GanttChartView.SectionID
+    ) -> Int?
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        indexPathFor itemID: GanttChartView.ItemID
+    ) -> IndexPath?
     
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
@@ -108,7 +113,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     // MARK: - Lifecycle
     
     override func prepare() {
-        guard let dataSource, let collectionView else { return }
+        guard let dataSource else { return }
         
         let sectionIDs = dataSource.sectionIDs(in: self)
         let workItemGroups = sectionIDs.compactMap {
@@ -128,12 +133,17 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             itemIDs: itemIDs
         )
         
-        for section in 0..<collectionView.numberOfSections {
-            for item in 0..<collectionView.numberOfItems(inSection: section) {
-                let indexPath = IndexPath(item: item, section: section)
-                let itemID = dataSource.ganttChartViewLayout(
+        for sectionID in sectionIDs {
+            let sectionIndex = dataSource.ganttChartViewLayout(
+                self,
+                indexFor: sectionID
+            )!
+            prepareLayoutAttributes(for: sectionID, at: sectionIndex)
+            
+            for itemID in itemIDs {
+                let indexPath = dataSource.ganttChartViewLayout(
                     self,
-                    itemIDAt: indexPath
+                    indexPathFor: itemID
                 )!
                 prepareLayoutAttributes(for: itemID, at: indexPath)
             }
@@ -147,7 +157,35 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     }
 }
 
+// MARK: - Preparation -
+
 extension GanttChartViewLayout {
+    
+    private func prepareLayoutAttributes(
+        for sectionID: GanttChartView.SectionID,
+        at index: Int
+    ) {
+        guard let dataSource else { return }
+        let indexPath = IndexPath(index: index)
+        switch sectionID {
+        case .dates:
+            break
+        case .workItemGroup(let groupID):
+            let group = dataSource.ganttChartViewLayout(
+                self,
+                workItemGroupWith: groupID
+            )
+            let groupSection = references.workItemGroupSection(
+                for: group
+            )
+            layoutAttributes.insert(
+                forSupplementaryViewOf: .workItemGroupHeader,
+                at: indexPath
+            ) { header in
+                header.frame = groupSection.headerFrame
+            }
+        }
+    }
     
     private func prepareLayoutAttributes(
         for itemID: GanttChartView.ItemID,

@@ -182,9 +182,16 @@ extension GanttChartView: GanttChartViewLayoutDataSource {
     
     func ganttChartViewLayout(
         _ ganttChartViewLayout: GanttChartViewLayout,
-        itemIDAt indexPath: IndexPath
-    ) -> ItemID? {
-        dataSource.itemIdentifier(for: indexPath)
+        indexFor sectionID: SectionID
+    ) -> Int? {
+        dataSource.index(for: sectionID)
+    }
+    
+    func ganttChartViewLayout(
+        _ ganttChartViewLayout: GanttChartViewLayout,
+        indexPathFor itemID: ItemID
+    ) -> IndexPath? {
+        dataSource.indexPath(for: itemID)
     }
     
     func ganttChartViewLayout(
