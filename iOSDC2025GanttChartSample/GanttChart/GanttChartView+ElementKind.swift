@@ -13,6 +13,10 @@ extension GanttChartView.ElementKind {
         "GanttChartView.elementKind"
     }
     
+    static var topPinnedHeaderBackground: Self {
+        .init(rawValue: "\(prefix).\(#function)")
+    }
+    
     static var workItemGroupHeader: Self {
         .init(rawValue: "\(prefix).\(#function)")
     }
