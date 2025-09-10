@@ -148,27 +148,32 @@ extension GanttChartViewLayout.LayoutReferences {
     
     struct DateColumn: Equatable {
         var dateCellFrame: CGRect
-        var leadingSeparatorFrame: CGRect
+        var leadingSeparatorFrames: FramesForEachElevationLevel
     }
     
     func dateColumn(for date: Date) -> DateColumn {
         var cellFrame = dates[date]!.initialCellFrame
         cellFrame.origin.y = offsetToPinElement.y
         
-        let leadingSeparatorFrame = {
-            let minY = cellFrame.minY
-            let maxY = contentSize.height
-            return CGRect(
-                x: cellFrame.minX - separatorThickness,
-                y: minY,
-                width: separatorThickness,
-                height: maxY - minY
-            )
-        }()
+        let leadingSeparatorOnHeaderFrame = CGRect(
+            x: cellFrame.minX - separatorThickness,
+            y: cellFrame.minY,
+            width: separatorThickness,
+            height: dateCellSize.height
+        )
+        let leadingSeparatorOnContentFrame = CGRect(
+            x: leadingSeparatorOnHeaderFrame.minX,
+            y: leadingSeparatorOnHeaderFrame.maxY,
+            width: leadingSeparatorOnHeaderFrame.width,
+            height: contentSize.height
+        )
         
         return DateColumn(
             dateCellFrame: cellFrame,
-            leadingSeparatorFrame: leadingSeparatorFrame
+            leadingSeparatorFrames: .init(
+                onTopPinnedHeader: leadingSeparatorOnHeaderFrame,
+                onContentArea: leadingSeparatorOnContentFrame
+            )
         )
     }
     

@@ -297,11 +297,21 @@ extension GanttChartViewLayout {
             layoutAttributes.insert(
                 forDecorationViewOf: .separator(
                     for: .leading,
+                    on: .topPinnedHeader
+                ),
+                at: indexPath
+            ) { separator in
+                separator.frame = dateColumn.leadingSeparatorFrames.onTopPinnedHeader
+                separator.zIndex = ZIndex.topPinnedHeaderSeparator
+            }
+            layoutAttributes.insert(
+                forDecorationViewOf: .separator(
+                    for: .leading,
                     on: .contentArea
                 ),
                 at: indexPath
             ) { separator in
-                separator.frame = dateColumn.leadingSeparatorFrame
+                separator.frame = dateColumn.leadingSeparatorFrames.onContentArea
                 separator.zIndex = ZIndex.backgroundSeparator
             }
         case .workItem(let workItemID):
