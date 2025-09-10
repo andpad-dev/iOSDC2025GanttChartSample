@@ -82,19 +82,19 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     // MARK: Layout references
     
     /// The layout information that serves as a reference for each element’s layout.
-    struct LayoutReferences {
+    struct LayoutReferences: Equatable {
         
-        struct DateReference {
+        struct DateReference: Equatable {
             /// - Note: This is an initial value.
             ///         The actual `origin.y` of the date cell will be updated for pinning.
             var initialCellFrame: CGRect
         }
         
-        struct WorkItemGroupReference {
+        struct WorkItemGroupReference: Equatable {
             var headerMinY: CGFloat
         }
         
-        struct WorkItemReference {
+        struct WorkItemReference: Equatable {
             var cellMinY: CGFloat
         }
         
@@ -115,6 +115,11 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             workItemGroups.removeAll(keepingCapacity: true)
             workItems.removeAll(keepingCapacity: true)
             contentSize = .zero
+            assert(
+                self == LayoutReferences(
+                    collectionView: collectionView
+                )
+            )
         }
     }
     
