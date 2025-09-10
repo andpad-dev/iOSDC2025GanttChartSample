@@ -56,6 +56,35 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
 
 // MARK: - Decoration views -
 
+final class GanttChartTopPinnedHeaderBackground: GanttChartReusableView {
+    
+    override func setUpViews() {
+        isUserInteractionEnabled = false
+        
+        // Subviews
+        let toolbar = UIToolbar() // The same blur effect as the navigation bar
+        toolbar.delegate = self
+        addSubview(toolbar)
+        
+        // Layout
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            // toolbar.edges == self.edges
+            toolbar.topAnchor.constraint(equalTo: topAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+}
+
+extension GanttChartTopPinnedHeaderBackground: UIToolbarDelegate {
+    
+    func position(for bar: any UIBarPositioning) -> UIBarPosition {
+        .top // for the bottom separator
+    }
+}
+
 final class GanttChartSeparator: GanttChartReusableView {
     
     override func setUpViews() {
