@@ -259,6 +259,18 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         // Invalidate layout to pin elements
         true
     }
+    
+    // MARK: - Methods
+    
+    func toggleWorkItemGroupSectionExpansion(
+        for groupID: WorkItemGroup.ID
+    ) {
+        if expandedWorkItemGroupIDs.contains(groupID) {
+            expandedWorkItemGroupIDs.remove(groupID)
+        } else {
+            expandedWorkItemGroupIDs.insert(groupID)
+        }
+    }
 }
 
 // MARK: - Preparation -
