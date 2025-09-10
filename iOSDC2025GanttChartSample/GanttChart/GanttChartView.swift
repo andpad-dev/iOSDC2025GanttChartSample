@@ -51,6 +51,10 @@ final class GanttChartView: UIView {
         return collectionView
     }()
     
+    private var layout: GanttChartViewLayout {
+        collectionView.collectionViewLayout as! GanttChartViewLayout
+    }
+    
     private let dateCellRegistration = DateCellRegistration()
     private let workItemCellRegistration = WorkItemCellRegistration()
     
