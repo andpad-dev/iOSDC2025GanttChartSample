@@ -119,6 +119,14 @@ extension GanttChartViewLayout.LayoutReferences {
 
 extension GanttChartViewLayout.LayoutReferences {
     
+    struct FramesForEachElevationLevel: Equatable {
+        /// A frame of an element on the top pinned header.
+        var onTopPinnedHeader: CGRect
+        
+        /// A frame of an element on the content area.
+        var onContentArea: CGRect
+    }
+    
     // MARK: - Top pinned header
     
     struct TopPinnedHeader {
