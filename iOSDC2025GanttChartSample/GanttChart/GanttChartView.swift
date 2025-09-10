@@ -24,6 +24,11 @@ final class GanttChartView: UIView {
         let rawValue: String
     }
     
+    enum ElevationLevel: String, CaseIterable, Hashable {
+        case topPinnedHeader
+        case contentArea
+    }
+    
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>
     
     private var workItemGroupProvider: (WorkItemGroup.ID) -> WorkItemGroup
