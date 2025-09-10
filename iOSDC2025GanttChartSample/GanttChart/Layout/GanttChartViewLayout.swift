@@ -216,18 +216,21 @@ extension GanttChartViewLayout {
                 at: indexPath
             ) { header in
                 header.frame = sectionHeader.frame
+                header.zIndex = ZIndex.workItemGroupHeader
             }
             layoutAttributes.insert(
                 forDecorationViewOf: .separator(for: .top),
                 at: indexPath
             ) { separator in
                 separator.frame = sectionHeader.topSeparatorFrame
+                separator.zIndex = ZIndex.workItemGroupHeaderSeparator
             }
             layoutAttributes.insert(
                 forDecorationViewOf: .separator(for: .bottom),
                 at: indexPath
             ) { separator in
                 separator.frame = sectionHeader.bottomSeparatorFrame
+                separator.zIndex = ZIndex.workItemGroupHeaderSeparator
             }
         }
     }
@@ -242,12 +245,14 @@ extension GanttChartViewLayout {
             let dateColumn = references.dateColumn(for: date)
             layoutAttributes.insert(forCellAt: indexPath) { cell in
                 cell.frame = dateColumn.dateCellFrame
+                cell.zIndex = ZIndex.dateCell
             }
             layoutAttributes.insert(
                 forDecorationViewOf: .separator(for: .leading),
                 at: indexPath
             ) { separator in
                 separator.frame = dateColumn.leadingSeparatorFrame
+                separator.zIndex = ZIndex.backgroundSeparator
             }
         case .workItem(let workItemID):
             layoutAttributes.insert(forCellAt: indexPath) { cell in
@@ -257,6 +262,7 @@ extension GanttChartViewLayout {
                 )
                 let row = references.workItemRow(for: workItem)
                 cell.frame = row.workItemCellFrame
+                cell.zIndex = ZIndex.workItemCell
             }
         }
     }
