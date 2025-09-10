@@ -145,6 +145,14 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     private var expandedWorkItemGroupIDs: Set<WorkItemGroup.ID> = []
     
+    func workItemGroupSectionState(
+        for groupID: WorkItemGroup.ID
+    ) -> WorkItemGroupSectionState {
+        expandedWorkItemGroupIDs.contains(groupID)
+        ? .expanded
+        : .collapsed
+    }
+    
     // MARK: - Overrides
     
     override var collectionViewContentSize: CGSize {
