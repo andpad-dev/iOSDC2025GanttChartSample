@@ -78,7 +78,10 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
             forTextStyle: .headline
         )
         titleButton.configuration = titleConfiguration
-        
+        updateState(with: state)
+    }
+    
+    func updateState(with state: State) {
         // Rotate the chevron
         titleButton.imageView!.transform = .init(
             rotationAngle: state == .expanded ? .pi / 2 : 0
