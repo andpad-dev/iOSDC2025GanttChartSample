@@ -141,13 +141,15 @@ final class GanttChartViewLayout: UICollectionViewLayout {
                 .topPinnedHeaderBackground
                 .rawValue
         )
-        for edge in Edge.allCases {
-            register(
-                GanttChartSeparator.self,
-                forDecorationViewOfKind: ElementKind
-                    .separator(for: edge)
-                    .rawValue
-            )
+        for level in GanttChartView.ElevationLevel.allCases {
+            for edge in Edge.allCases {
+                register(
+                    GanttChartSeparator.self,
+                    forDecorationViewOfKind: ElementKind
+                        .separator(for: edge, on: level)
+                        .rawValue
+                )
+            }
         }
     }
     
@@ -257,14 +259,20 @@ extension GanttChartViewLayout {
                 header.zIndex = ZIndex.workItemGroupHeader
             }
             layoutAttributes.insert(
-                forDecorationViewOf: .separator(for: .top),
+                forDecorationViewOf: .separator(
+                    for: .top,
+                    on: .contentArea
+                ),
                 at: indexPath
             ) { separator in
                 separator.frame = sectionHeader.topSeparatorFrame
                 separator.zIndex = ZIndex.workItemGroupHeaderSeparator
             }
             layoutAttributes.insert(
-                forDecorationViewOf: .separator(for: .bottom),
+                forDecorationViewOf: .separator(
+                    for: .bottom,
+                    on: .contentArea
+                ),
                 at: indexPath
             ) { separator in
                 separator.frame = sectionHeader.bottomSeparatorFrame
@@ -286,7 +294,10 @@ extension GanttChartViewLayout {
                 cell.zIndex = ZIndex.dateCell
             }
             layoutAttributes.insert(
-                forDecorationViewOf: .separator(for: .leading),
+                forDecorationViewOf: .separator(
+                    for: .leading,
+                    on: .contentArea
+                ),
                 at: indexPath
             ) { separator in
                 separator.frame = dateColumn.leadingSeparatorFrame

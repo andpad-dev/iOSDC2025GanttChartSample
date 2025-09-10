@@ -21,7 +21,10 @@ extension GanttChartView.ElementKind {
         .init(rawValue: "\(prefix).\(#function)")
     }
     
-    static func separator(for edge: Edge) -> Self {
-        .init(rawValue: "\(prefix).\(#function).\(edge)")
+    static func separator(
+        for edge: Edge,
+        on level: GanttChartView.ElevationLevel
+    ) -> Self {
+        .init(rawValue: "\(prefix).\(#function).\(edge).\(level)")
     }
 }
