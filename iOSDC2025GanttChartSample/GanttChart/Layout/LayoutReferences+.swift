@@ -11,6 +11,12 @@ import SwiftUI
 
 extension GanttChartViewLayout.LayoutReferences {
     
+    /// The offset for pinning elements during scrolling.
+    var offsetToPinElement: CGPoint {
+        // Pin elements by shifting them by the same amount as the scroll
+        collectionView?.adjustedContentOffset ?? .zero
+    }
+    
     var dateCellSize: CGSize {
         .init(width: 24, height: 48)
     }
