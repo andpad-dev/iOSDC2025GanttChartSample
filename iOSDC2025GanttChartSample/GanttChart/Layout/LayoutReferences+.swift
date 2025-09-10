@@ -43,7 +43,8 @@ extension GanttChartViewLayout.LayoutReferences {
     
     mutating func prepare(
         workItemGroups: [WorkItemGroup],
-        itemIDs: [GanttChartView.ItemID]
+        itemIDs: [GanttChartView.ItemID],
+        expandedWorkItemGroupIDs: Set<WorkItemGroup.ID>
     ) {
         let finalContentSize: CGSize
         defer {
@@ -62,7 +63,8 @@ extension GanttChartViewLayout.LayoutReferences {
         
         prepareWorkItemArea(
             updatingBottomY: &bottomY,
-            with: workItemGroups
+            with: workItemGroups,
+            expandedWorkItemGroupIDs: expandedWorkItemGroupIDs
         )
         
         finalContentSize = .init(
@@ -97,7 +99,8 @@ extension GanttChartViewLayout.LayoutReferences {
     
     private mutating func prepareWorkItemArea(
         updatingBottomY bottomY: inout CGFloat,
-        with groups: [WorkItemGroup]
+        with groups: [WorkItemGroup],
+        expandedWorkItemGroupIDs: Set<WorkItemGroup.ID>
     ) {
         let verticalSpacing = 4.0
         for group in groups {
@@ -108,8 +111,15 @@ extension GanttChartViewLayout.LayoutReferences {
             + separatorThickness // Header bottom separator
             + verticalSpacing
             
-            for workItem in group.children {
-                workItems[workItem.id] = .init(cellMinY: bottomY)
+            if expandedWorkItemGroupIDs.contains(group.id) {
+                for workItem in group.children {
+                    workItems[workItem.id] = .init(cellMinY: bottomY)
+                    bottomY += workItemCellHeight + verticalSpacing
+                }
+            } else {
+                for workItem in group.children {
+                    workItems[workItem.id] = .init(cellMinY: bottomY)
+                }
                 bottomY += workItemCellHeight + verticalSpacing
             }
         }

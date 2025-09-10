@@ -43,6 +43,7 @@ protocol GanttChartViewLayoutDataSource: AnyObject {
 final class GanttChartViewLayout: UICollectionViewLayout {
     
     typealias ElementKind = GanttChartView.ElementKind
+    typealias WorkItemGroupSectionState = GanttChartView.WorkItemGroupSectionState
     
     weak var dataSource: (any GanttChartViewLayoutDataSource)?
     
@@ -140,6 +141,10 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         static var backgroundSeparator: Int { 100 }
     }
     
+    // MARK: States
+    
+    private var expandedWorkItemGroupIDs: Set<WorkItemGroup.ID> = []
+    
     // MARK: - Overrides
     
     override var collectionViewContentSize: CGSize {
@@ -197,7 +202,8 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             }
             references.prepare(
                 workItemGroups: workItemGroups,
-                itemIDs: itemIDs
+                itemIDs: itemIDs,
+                expandedWorkItemGroupIDs: expandedWorkItemGroupIDs
             )
         }
         
