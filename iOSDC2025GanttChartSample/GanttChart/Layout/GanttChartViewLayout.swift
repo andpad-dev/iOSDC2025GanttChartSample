@@ -112,7 +112,11 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     )
     
     enum ZIndex {
-        static var dateCell: Int { 400 }
+        // Top pinned header area
+        static var dateCell: Int { 1100 }
+        static var topPinnedHeaderBackground: Int { 1000 }
+        
+        // Content area
         static var workItemGroupHeaderSeparator: Int { 310 }
         static var workItemGroupHeader: Int { 300 }
         static var workItemCell: Int { 200 }
@@ -130,6 +134,13 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     override init() {
         super.init()
         
+        // Register decoration views
+        register(
+            GanttChartTopPinnedHeaderBackground.self,
+            forDecorationViewOfKind: ElementKind
+                .topPinnedHeaderBackground
+                .rawValue
+        )
         for edge in Edge.allCases {
             register(
                 GanttChartSeparator.self,
@@ -167,6 +178,9 @@ final class GanttChartViewLayout: UICollectionViewLayout {
             itemIDs: itemIDs
         )
         
+        // Prepare layout attributes
+        prepareLayoutAttributesForTopPinnedHeader()
+        
         for sectionID in sectionIDs {
             let sectionIndex = dataSource.ganttChartViewLayout(
                 self,
@@ -203,6 +217,19 @@ final class GanttChartViewLayout: UICollectionViewLayout {
 // MARK: - Preparation -
 
 extension GanttChartViewLayout {
+    
+    private func prepareLayoutAttributesForTopPinnedHeader() {
+        // Use a unique and stable IndexPath
+        let indexPath = IndexPath(index: -1)
+        layoutAttributes.insert(
+            forDecorationViewOf: .topPinnedHeaderBackground,
+            at: indexPath
+        ) { background in
+            let header = references.topPinnedHeader()
+            background.frame = header.frame
+            background.zIndex = ZIndex.topPinnedHeaderBackground
+        }
+    }
     
     private func prepareLayoutAttributes(
         for sectionID: GanttChartView.SectionID,
