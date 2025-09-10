@@ -187,6 +187,15 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     ) -> [UICollectionViewLayoutAttributes]? {
         layoutAttributes.forVisibleElements(in: rect)
     }
+    
+    // MARK: Invalidation
+    
+    override func shouldInvalidateLayout(
+        forBoundsChange newBounds: CGRect
+    ) -> Bool {
+        // Invalidate layout to pin elements
+        true
+    }
 }
 
 // MARK: - Preparation -

@@ -162,7 +162,7 @@ extension GanttChartViewLayout.LayoutReferences {
     ) -> WorkItemGroupSection {
         let headerFrame = CGRect(
             origin: .init(
-                x: 0,
+                x: offsetToPinElement.x,
                 y: workItemGroups[workItemGroup.id]!.headerMinY
             ),
             size: workItemGroupHeaderSize
