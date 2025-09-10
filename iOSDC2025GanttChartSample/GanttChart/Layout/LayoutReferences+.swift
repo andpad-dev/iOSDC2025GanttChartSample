@@ -65,7 +65,7 @@ extension GanttChartViewLayout.LayoutReferences {
         )
         
         finalContentSize = .init(
-            width: dates[lastDate]!.cellFrame.maxX,
+            width: dates[lastDate]!.initialCellFrame.maxX,
             height: bottomY
         )
     }
@@ -77,7 +77,7 @@ extension GanttChartViewLayout.LayoutReferences {
         for case .date(let date) in itemIDs {
             let minX: CGFloat = if let previousDate {
                 // itemIDs are assumed to be sorted by date
-                dates[previousDate]!.cellFrame.maxX + separatorThickness
+                dates[previousDate]!.initialCellFrame.maxX + separatorThickness
             } else {
                 0.0
             }
@@ -85,7 +85,7 @@ extension GanttChartViewLayout.LayoutReferences {
                 origin: .init(x: minX, y: 0),
                 size: dateCellSize
             )
-            dates[date] = .init(cellFrame: frame)
+            dates[date] = .init(initialCellFrame: frame)
             previousDate = date
         }
         return (
@@ -127,7 +127,9 @@ extension GanttChartViewLayout.LayoutReferences {
     }
     
     func dateColumn(for date: Date) -> DateColumn {
-        let cellFrame = dates[date]!.cellFrame
+        var cellFrame = dates[date]!.initialCellFrame
+        cellFrame.origin.y = offsetToPinElement.y
+        
         let leadingSeparatorFrame = {
             let minY = cellFrame.minY
             let maxY = contentSize.height
@@ -138,6 +140,7 @@ extension GanttChartViewLayout.LayoutReferences {
                 height: maxY - minY
             )
         }()
+        
         return DateColumn(
             dateCellFrame: cellFrame,
             leadingSeparatorFrame: leadingSeparatorFrame
@@ -190,8 +193,8 @@ extension GanttChartViewLayout.LayoutReferences {
     
     func workItemRow(for workItem: WorkItem) -> WorkItemRow {
         let schedule = workItem.schedule
-        let minX = dates[schedule.lowerBound]!.cellFrame.minX
-        let maxX = dates[schedule.upperBound]!.cellFrame.maxX
+        let minX = dates[schedule.lowerBound]!.initialCellFrame.minX
+        let maxX = dates[schedule.upperBound]!.initialCellFrame.maxX
         return WorkItemRow(
             workItemCellFrame: .init(
                 x: minX,

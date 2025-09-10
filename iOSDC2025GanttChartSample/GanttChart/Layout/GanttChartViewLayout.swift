@@ -85,7 +85,9 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     struct LayoutReferences {
         
         struct DateReference {
-            var cellFrame: CGRect
+            /// - Note: This is an initial value.
+            ///         The actual `origin.y` of the date cell will be updated for pinning.
+            var initialCellFrame: CGRect
         }
         
         struct WorkItemGroupReference {
