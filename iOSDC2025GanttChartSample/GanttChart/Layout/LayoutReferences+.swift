@@ -119,6 +119,23 @@ extension GanttChartViewLayout.LayoutReferences {
 
 extension GanttChartViewLayout.LayoutReferences {
     
+    // MARK: - Top pinned header
+    
+    struct TopPinnedHeader {
+        var frame: CGRect
+    }
+    
+    func topPinnedHeader() -> TopPinnedHeader {
+        TopPinnedHeader(
+            frame: .init(
+                x: offsetToPinElement.x,
+                y: offsetToPinElement.y,
+                width: collectionView?.bounds.width ?? 0,
+                height: dateCellSize.height
+            )
+        )
+    }
+    
     // MARK: - Date area
     
     struct DateColumn: Equatable {
