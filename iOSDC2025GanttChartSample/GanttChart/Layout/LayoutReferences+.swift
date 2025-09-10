@@ -48,6 +48,7 @@ extension GanttChartViewLayout.LayoutReferences {
         let finalContentSize: CGSize
         defer {
             contentSize = finalContentSize
+            isInvalidated = false
         }
         
         let (dateAreaBottomY, lastDate) = prepareDateArea(with: itemIDs)

@@ -100,11 +100,22 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         
         weak var collectionView: UICollectionView?
         
+        var isInvalidated = true
+        
         var dates: [Date: DateReference] = [:]
         var workItemGroups: [WorkItemGroup.ID: WorkItemGroupReference] = [:]
         var workItems: [WorkItem.ID: WorkItemReference] = [:]
         
         var contentSize: CGSize = .zero
+        
+        /// Invalidates all reference values.
+        mutating func invalidate() {
+            isInvalidated = true
+            dates.removeAll(keepingCapacity: true)
+            workItemGroups.removeAll(keepingCapacity: true)
+            workItems.removeAll(keepingCapacity: true)
+            contentSize = .zero
+        }
     }
     
     private lazy var references = LayoutReferences(
@@ -164,22 +175,26 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         guard let dataSource else { return }
         
         let sectionIDs = dataSource.sectionIDs(in: self)
-        let workItemGroups = sectionIDs.compactMap {
-            switch $0 {
-            case .workItemGroup(let groupID):
-                dataSource.ganttChartViewLayout(
-                    self,
-                    workItemGroupWith: groupID
-                )
-            default:
-                nil
-            }
-        }
         let itemIDs = dataSource.itemIDs(in: self)
-        references.prepare(
-            workItemGroups: workItemGroups,
-            itemIDs: itemIDs
-        )
+        
+        // Calculate reference values for layout if needed
+        if references.isInvalidated {
+            let workItemGroups = sectionIDs.compactMap {
+                switch $0 {
+                case .workItemGroup(let groupID):
+                    dataSource.ganttChartViewLayout(
+                        self,
+                        workItemGroupWith: groupID
+                    )
+                default:
+                    nil
+                }
+            }
+            references.prepare(
+                workItemGroups: workItemGroups,
+                itemIDs: itemIDs
+            )
+        }
         
         // Prepare layout attributes
         prepareLayoutAttributesForTopPinnedHeader()
@@ -208,6 +223,16 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     }
     
     // MARK: Invalidation
+    
+    override func invalidateLayout(
+        with context: UICollectionViewLayoutInvalidationContext
+    ) {
+        if context.invalidateEverything
+            || context.invalidateDataSourceCounts {
+            references.invalidate()
+        }
+        super.invalidateLayout(with: context)
+    }
     
     override func shouldInvalidateLayout(
         forBoundsChange newBounds: CGRect
