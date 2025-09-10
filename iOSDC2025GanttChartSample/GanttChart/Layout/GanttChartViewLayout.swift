@@ -114,6 +114,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     enum ZIndex {
         // Top pinned header area
         static var dateCell: Int { 1100 }
+        static var topPinnedHeaderSeparator: Int { 1010 }
         static var topPinnedHeaderBackground: Int { 1000 }
         
         // Content area
