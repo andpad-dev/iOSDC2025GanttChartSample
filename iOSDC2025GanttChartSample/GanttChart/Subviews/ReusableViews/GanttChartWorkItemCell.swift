@@ -25,7 +25,11 @@ final class GanttChartWorkItemCell: UICollectionViewCell {
                 )
                 .padding(.horizontal, 6)
                 .background(.yellow)
-                .clipShape(.rect(cornerRadius: 4))
+                .overlay {
+                    ContainerRelativeShape()
+                        .strokeBorder(.orange.secondary)
+                }
+                .containerShape(.rect(cornerRadius: 4))
         }
         .margins(.all, 0)
     }

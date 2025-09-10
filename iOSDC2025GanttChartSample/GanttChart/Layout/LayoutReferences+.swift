@@ -235,7 +235,7 @@ extension GanttChartViewLayout.LayoutReferences {
     func workItemRow(for workItem: WorkItem) -> WorkItemRow {
         let schedule = workItem.schedule
         let minX = dates[schedule.lowerBound]!.initialCellFrame.minX
-        let maxX = dates[schedule.upperBound]!.initialCellFrame.maxX
+        let maxX = dates[schedule.upperBound]!.initialCellFrame.maxX - 1
         return WorkItemRow(
             workItemCellFrame: .init(
                 x: minX,
