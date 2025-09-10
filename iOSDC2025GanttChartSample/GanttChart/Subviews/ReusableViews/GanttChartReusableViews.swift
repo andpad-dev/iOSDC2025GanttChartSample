@@ -27,30 +27,62 @@ class GanttChartReusableView: UICollectionReusableView {
 
 final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .headline)
-        return label
+    typealias State = GanttChartView.WorkItemGroupSectionState
+    
+    private let titleButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseForegroundColor = .label
+        configuration.baseBackgroundColor = .secondarySystemBackground
+        configuration.contentInsets.leading = 8
+        configuration.titleLineBreakMode = .byTruncatingTail
+        configuration.image = .init(systemName: "chevron.right")
+        configuration.imagePadding = 8
+        configuration.preferredSymbolConfigurationForImage = .init(scale: .small)
+            .applying(
+                UIImage.SymbolConfiguration(weight: .semibold)
+            )
+            .applying(
+                UIImage.SymbolConfiguration(hierarchicalColor: .secondaryLabel)
+            )
+        var background = UIBackgroundConfiguration.clear()
+        background.backgroundColor = .secondarySystemBackground
+        configuration.background = background
+        let button = UIButton(configuration: configuration)
+        button.contentHorizontalAlignment = .leading
+        button.imageView!.contentMode = .center
+        return button
     }()
     
     override func setUpViews() {
-        backgroundColor = .secondarySystemBackground
-        
         // Subviews
-        addSubview(titleLabel)
+        addSubview(titleButton)
         
         // Layout
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            // titleButton.edges == self.edges
+            titleButton.topAnchor.constraint(equalTo: topAnchor),
+            titleButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleButton.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
     
-    func configure(workItemGroup: WorkItemGroup) {
-        titleLabel.text = workItemGroup.name
+    func configure(
+        workItemGroup: WorkItemGroup,
+        state: State
+    ) {
+        var titleConfiguration = titleButton.configuration!
+        titleConfiguration.title = workItemGroup.name
+        titleConfiguration.attributedTitle!.font = .preferredFont(
+            forTextStyle: .headline
+        )
+        titleButton.configuration = titleConfiguration
+        
+        // Rotate the chevron
+        titleButton.imageView!.transform = .init(
+            rotationAngle: state == .expanded ? .pi / 2 : 0
+        )
     }
 }
 

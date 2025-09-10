@@ -127,7 +127,8 @@ final class GanttChartView: UIView {
                 atSection: indexPath.section
             )!
             header.configure(
-                workItemGroup: workItemGroupProvider(groupID)
+                workItemGroup: workItemGroupProvider(groupID),
+                state: layout.workItemGroupSectionState(for: groupID)
             )
         }
         dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
