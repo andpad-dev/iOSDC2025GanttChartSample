@@ -109,6 +109,14 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         collectionView: collectionView
     )
     
+    enum ZIndex {
+        static var dateCell: Int { 400 }
+        static var workItemGroupHeaderSeparator: Int { 310 }
+        static var workItemGroupHeader: Int { 300 }
+        static var workItemCell: Int { 200 }
+        static var backgroundSeparator: Int { 100 }
+    }
+    
     // MARK: - Overrides
     
     override var collectionViewContentSize: CGSize {
