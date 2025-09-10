@@ -29,6 +29,11 @@ final class GanttChartView: UIView {
         case contentArea
     }
     
+    enum WorkItemGroupSectionState: Hashable {
+        case expanded
+        case collapsed
+    }
+    
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionID, ItemID>
     
     private var workItemGroupProvider: (WorkItemGroup.ID) -> WorkItemGroup
