@@ -143,7 +143,13 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     // MARK: States
     
-    private var expandedWorkItemGroupIDs: Set<WorkItemGroup.ID> = []
+    private var expandedWorkItemGroupIDs: Set<WorkItemGroup.ID> = [] {
+        willSet {
+            if newValue != expandedWorkItemGroupIDs {
+                references.invalidate()
+            }
+        }
+    }
     
     func workItemGroupSectionState(
         for groupID: WorkItemGroup.ID

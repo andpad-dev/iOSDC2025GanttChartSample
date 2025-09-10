@@ -29,6 +29,8 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
     
     typealias State = GanttChartView.WorkItemGroupSectionState
     
+    var tapHandler: ((GanttChartWorkItemGroupHeaderView) -> Void)?
+    
     private let titleButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = .label
@@ -57,6 +59,11 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
         // Subviews
         addSubview(titleButton)
         
+        titleButton.addAction(.init { [weak self] _ in
+            guard let self else { return }
+            tapHandler?(self)
+        }, for: .primaryActionTriggered)
+        
         // Layout
         titleButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -70,8 +77,11 @@ final class GanttChartWorkItemGroupHeaderView: GanttChartReusableView {
     
     func configure(
         workItemGroup: WorkItemGroup,
-        state: State
+        state: State,
+        tapHandler: @escaping (GanttChartWorkItemGroupHeaderView) -> Void
     ) {
+        self.tapHandler = tapHandler
+        
         var titleConfiguration = titleButton.configuration!
         titleConfiguration.title = workItemGroup.name
         titleConfiguration.attributedTitle!.font = .preferredFont(

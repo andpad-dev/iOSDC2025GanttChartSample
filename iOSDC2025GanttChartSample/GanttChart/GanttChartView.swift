@@ -128,7 +128,13 @@ final class GanttChartView: UIView {
             )!
             header.configure(
                 workItemGroup: workItemGroupProvider(groupID),
-                state: layout.workItemGroupSectionState(for: groupID)
+                state: layout.workItemGroupSectionState(for: groupID),
+                tapHandler: { [weak self] header in
+                    self?.workItemGroupHeaderTapped(
+                        header,
+                        for: groupID
+                    )
+                }
             )
         }
         dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
@@ -143,6 +149,22 @@ final class GanttChartView: UIView {
                     "Unexpected element kind: \(elementKind)"
                 )
             }
+        }
+    }
+    
+    private func workItemGroupHeaderTapped(
+        _ header: GanttChartWorkItemGroupHeaderView,
+        for groupID: WorkItemGroup.ID
+    ) {
+        UIView.animate(withDuration: 0.3) {
+            self.layout.toggleWorkItemGroupSectionExpansion(for: groupID)
+            self.layout.invalidateLayout()
+            
+            // Sync the expansion state with the header
+            let newState = self.layout.workItemGroupSectionState(
+                for: groupID
+            )
+            header.updateState(with: newState)
         }
     }
     
