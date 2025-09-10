@@ -97,6 +97,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         
         struct WorkItemReference: Equatable {
             var cellMinY: CGFloat
+            var zIndex: Int
         }
         
         weak var collectionView: UICollectionView?
@@ -137,8 +138,13 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         // Content area
         static var workItemGroupHeaderSeparator: Int { 310 }
         static var workItemGroupHeader: Int { 300 }
-        static var workItemCell: Int { 200 }
+        static var workItemCellBase: Int { 200 }
         static var backgroundSeparator: Int { 100 }
+        
+        static func workItemCell(offset: Int) -> Int {
+            // Offset zIndex so that overlapping cells are displayed correctly
+            workItemCellBase + offset
+        }
     }
     
     // MARK: States
@@ -384,7 +390,7 @@ extension GanttChartViewLayout {
                 )
                 let row = references.workItemRow(for: workItem)
                 cell.frame = row.workItemCellFrame
-                cell.zIndex = ZIndex.workItemCell
+                cell.zIndex = references.workItems[workItem.id]!.zIndex
             }
         }
     }

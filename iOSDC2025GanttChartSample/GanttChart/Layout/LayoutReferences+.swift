@@ -41,6 +41,8 @@ extension GanttChartViewLayout.LayoutReferences {
 
 extension GanttChartViewLayout.LayoutReferences {
     
+    typealias ZIndex = GanttChartViewLayout.ZIndex
+    
     mutating func prepare(
         workItemGroups: [WorkItemGroup],
         itemIDs: [GanttChartView.ItemID],
@@ -112,13 +114,19 @@ extension GanttChartViewLayout.LayoutReferences {
             + verticalSpacing
             
             if expandedWorkItemGroupIDs.contains(group.id) {
-                for workItem in group.children {
-                    workItems[workItem.id] = .init(cellMinY: bottomY)
+                for (offset, workItem) in group.children.enumerated() {
+                    workItems[workItem.id] = .init(
+                        cellMinY: bottomY,
+                        zIndex: ZIndex.workItemCell(offset: offset)
+                    )
                     bottomY += workItemCellHeight + verticalSpacing
                 }
             } else {
-                for workItem in group.children {
-                    workItems[workItem.id] = .init(cellMinY: bottomY)
+                for (offset, workItem) in group.children.enumerated() {
+                    workItems[workItem.id] = .init(
+                        cellMinY: bottomY,
+                        zIndex: ZIndex.workItemCell(offset: offset)
+                    )
                 }
                 bottomY += workItemCellHeight + verticalSpacing
             }
