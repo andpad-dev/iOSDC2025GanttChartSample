@@ -49,6 +49,7 @@ final class GanttChartViewLayout: UICollectionViewLayout {
     
     // MARK: Layout attributes
     
+    @MainActor
     struct LayoutAttributes {
         
         typealias Dictionary = [

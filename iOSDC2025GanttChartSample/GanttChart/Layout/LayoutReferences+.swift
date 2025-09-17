@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - References -
 
+@MainActor
 extension GanttChartViewLayout.LayoutReferences {
     
     /// The offset for pinning elements during scrolling.
@@ -39,6 +40,7 @@ extension GanttChartViewLayout.LayoutReferences {
 
 // MARK: - Preparation -
 
+@MainActor
 extension GanttChartViewLayout.LayoutReferences {
     
     typealias ZIndex = GanttChartViewLayout.ZIndex
@@ -145,6 +147,7 @@ extension GanttChartViewLayout.LayoutReferences {
 
 // MARK: - Frames for each elements -
 
+@MainActor
 extension GanttChartViewLayout.LayoutReferences {
     
     struct FramesForEachElevationLevel: Equatable {

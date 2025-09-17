@@ -35,6 +35,7 @@ extension GanttChartView {
 
 // MARK: - Cell registrations -
 
+@MainActor
 extension GanttChartView.DateCellRegistration {
     
     init() {
@@ -44,6 +45,7 @@ extension GanttChartView.DateCellRegistration {
     }
 }
 
+@MainActor
 extension GanttChartView.WorkItemCellRegistration {
     
     init() {
