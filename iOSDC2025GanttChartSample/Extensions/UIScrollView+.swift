@@ -9,6 +9,16 @@ import UIKit
 
 extension UIScrollView {
     
+    /// Returns the size with the content insets applied.
+    ///
+    /// That means the size with the content insets subtracted.
+    var effectiveSize: CGSize {
+        .init(
+            width: bounds.width - adjustedContentInset.left - adjustedContentInset.right,
+            height: bounds.height - adjustedContentInset.top - adjustedContentInset.bottom
+        )
+    }
+    
     /// Returns the content offset adjusted for `adjustedContentInset`.
     ///
     /// It is calibrated so that `.zero` is returned when scrolled to the top-left edge.
