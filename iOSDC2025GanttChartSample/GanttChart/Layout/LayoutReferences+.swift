@@ -48,6 +48,9 @@ extension GanttChartViewLayout.LayoutReferences {
         itemIDs: [GanttChartView.ItemID],
         expandedWorkItemGroupIDs: Set<WorkItemGroup.ID>
     ) {
+        guard let collectionView else { return }
+        
+        let minimumContentSize = collectionView.effectiveSize
         let finalContentSize: CGSize
         defer {
             contentSize = finalContentSize
@@ -56,7 +59,7 @@ extension GanttChartViewLayout.LayoutReferences {
         
         let (dateAreaBottomY, lastDate) = prepareDateArea(with: itemIDs)
         guard let lastDate else {
-            finalContentSize = .zero
+            finalContentSize = minimumContentSize
             return
         }
         
@@ -70,8 +73,14 @@ extension GanttChartViewLayout.LayoutReferences {
         )
         
         finalContentSize = .init(
-            width: dates[lastDate]!.initialCellFrame.maxX,
-            height: bottomY
+            width: max(
+                dates[lastDate]!.initialCellFrame.maxX,
+                minimumContentSize.width
+            ),
+            height: max(
+                bottomY,
+                minimumContentSize.height
+            )
         )
     }
     
