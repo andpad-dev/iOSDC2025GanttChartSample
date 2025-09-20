@@ -18,6 +18,7 @@ final class GanttChartWorkItemCell: UICollectionViewCell {
         contentConfiguration = UIHostingConfiguration {
             Text(configuration.title)
                 .font(.headline)
+                .foregroundStyle(.black)
                 .frame(
                     maxWidth: .infinity,
                     maxHeight: .infinity,
