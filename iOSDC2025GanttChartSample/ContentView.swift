@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             GanttChart(state: ganttChartState)
-                .ignoresSafeArea()
+                .ignoresSafeArea(edges: [.bottom])
                 .navigationTitle("ガントチャート")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackgroundVisibility(
