@@ -254,6 +254,28 @@ final class GanttChartViewLayout: UICollectionViewLayout {
         layoutAttributes.forVisibleElements(in: rect)
     }
     
+    override func layoutAttributesForItem(
+        at indexPath: IndexPath
+    ) -> UICollectionViewLayoutAttributes? {
+        layoutAttributes.items[indexPath]
+    }
+    
+    override func layoutAttributesForSupplementaryView(
+        ofKind elementKind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionViewLayoutAttributes? {
+        let elementKind = ElementKind(rawValue: elementKind)
+        return layoutAttributes.supplementaryViews[elementKind]?[indexPath]
+    }
+    
+    override func layoutAttributesForDecorationView(
+        ofKind elementKind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionViewLayoutAttributes? {
+        let elementKind = ElementKind(rawValue: elementKind)
+        return layoutAttributes.decorationViews[elementKind]?[indexPath]
+    }
+    
     // MARK: Invalidation
     
     override func invalidateLayout(
